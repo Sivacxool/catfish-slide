@@ -101,12 +101,12 @@ function Hero({ go }: { go: (n: number) => void }) {
       <div className="hero-copy">
         <Eyebrow>A BETTER BEGINNING</Eyebrow>
         <h1>
-          ดูแลทุกจุดเริ่มต้น
+          เครื่องฟักไข่
           <br />
-          ของ<span className="serene">ชีวิต.</span>
+          ปลาดุก<span className="serene">อัจฉริยะ</span>
         </h1>
         <p>
-          เครื่องฟักไข่ปลาดุกอัจฉริยะ
+          เครื่องฟักไข่ปลาดุก
           <br />
           ผสานการควบคุมสภาพน้ำ กับพลังของ AI
         </p>
@@ -363,11 +363,6 @@ function Counting() {
               </p>
             </div>
           )}
-          <Caption>
-            หน้านี้อธิบายแนวคิด AI ตามเอกสาร
-            <br />
-            ยังไม่ได้ประมวลผลภาพด้วยโมเดลจริง
-          </Caption>
         </div>
       </div>
     </>
@@ -451,7 +446,6 @@ function SlideBody({
               เราอยากให้ผู้เพาะฟักมีโอกาสได้ลูกปลาที่มากขึ้น
               และให้ผู้เลี้ยงได้ลูกปลาที่มีคุณภาพและแข็งแรง
             </p>
-            <Caption>ความตั้งใจของโครงการ • Pitching.pdf หน้า 18</Caption>
             <img
               className="inset-photo"
               src={img('farm')}
@@ -492,9 +486,8 @@ function SlideBody({
                 </p>
               </div>
               <Caption>
-                ที่มาใน PDF: สถิติผลการเลี้ยงสัตว์น้ำจืด กรมประมง 2568
+                ที่มา: สถิติผลการเลี้ยงสัตว์น้ำจืด กรมประมง 2568
                 <br />
-                ตัวเลขตาม PDF • ยังไม่ได้ยืนยันตารางต้นทาง
               </Caption>
               <button className="text-button" onClick={source}>
                 ดูข้อมูลในเอกสาร <ArrowUpRight size={17} />
@@ -557,9 +550,9 @@ function SlideBody({
               </div>
               <h3>การฟักด้วยมุ้งเขียว</h3>
               <p>
-                เอกสารระบุข้อจำกัดเรื่องอัตราฟัก
+                อัตราฟักต่ำ
                 <br />
-                ที่ต่ำและไม่คงที่
+                และไม่คงที่
               </p>
             </article>
             <article>
@@ -597,9 +590,9 @@ function SlideBody({
               ].map((x, i) => (
                 <button key={x.name} onClick={() => go(i + 7)}>
                   <span>0{i + 1}</span>
-                  <x.icon size={22} />
+                  <x.icon size={28} />
                   <strong>{x.name}</strong>
-                  <ArrowUpRight size={18} />
+                  <ArrowUpRight size={22} />
                 </button>
               ))}
             </div>
@@ -645,11 +638,6 @@ function SlideBody({
                   </div>
                 </div>
               ))}
-              <Caption>
-                หลักการตาม PDF หน้า 36
-                <br />
-                ยังไม่ระบุตัวเลขประสิทธิภาพของเครื่องต้นแบบ
-              </Caption>
             </div>
           </div>
         </>
@@ -696,9 +684,6 @@ function SlideBody({
               ))}
             </div>
           </div>
-          <Caption>
-            สถาปัตยกรรมตามแนวคิดใน PDF • สถานะการเชื่อมต่อจริงต้องยืนยันกับทีม
-          </Caption>
         </>
       );
     case 11:
@@ -729,11 +714,6 @@ function SlideBody({
                   {t}
                 </div>
               ))}
-              <Caption>
-                *ตัวชี้วัดเพิ่มเติมที่เสนอสำหรับการทดสอบ AI
-                <br />
-                ยังไม่มีผลทดลองเครื่องที่ยืนยันในเอกสาร
-              </Caption>
             </div>
             <div className="experiment-vars">
               <div>
@@ -811,11 +791,6 @@ function SlideBody({
             <div className="team-name">Wongnaieiei</div>
             <p className="lede">AI and Digital Innovations</p>
             <p>โรงเรียนเตรียมอุดมศึกษาพัฒนาการ ปทุมธานี</p>
-            <Caption>
-              ชื่อสถาบันอ้างอิงตามหน้าทีมในเอกสาร
-              <br />
-              ภาพกิจกรรมจาก Pitching.pdf
-            </Caption>
           </div>
           <div className="team-photos">
             <div className="team-portraits">
