@@ -41,8 +41,17 @@ export default defineConfig(async () => {
   process.env.WRANGLER_LOG_PATH ??= '.wrangler/logs';
   process.env.MINIFLARE_REGISTRY_PATH ??= '.wrangler/registry';
 
-  // Wrangler snapshots its log path while the Cloudflare plugin is imported.
-  const { cloudflare } = await import('@cloudflare/vite-plugin');
+  // Vercel builds use Nitro's Vercel preset. Local preview and OpenAI Sites
+  // continue to use the native Cloudflare adapter and bindings.
+  const isVercelBuild =
+    process.env.VERCEL === '1' || process.env.NITRO_PRESET === 'vercel';
+
+  const deploymentPlugin = isVercelBuild
+    ? (await import('nitro/vite')).nitro()
+    : (await import('@cloudflare/vite-plugin')).cloudflare({
+        viteEnvironment: { name: 'rsc', childEnvironments: ['ssr'] },
+        config: localBindingConfig,
+      });
 
   return {
     css: { postcss: { plugins: [tailwindcss()] } },
@@ -52,10 +61,7 @@ export default defineConfig(async () => {
     plugins: [
       vinext(),
       sites(),
-      cloudflare({
-        viteEnvironment: { name: 'rsc', childEnvironments: ['ssr'] },
-        config: localBindingConfig,
-      }),
+      deploymentPlugin,
     ],
   };
 });
