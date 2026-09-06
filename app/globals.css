@@ -2746,3 +2746,439 @@ p {
 .ocean-light {
   mask-image: radial-gradient(ellipse at 50% 20%, black 0%, transparent 75%);
 }
+
+/* Cinematic image-led motion. Both layers come directly from the PDF asset set. */
+.cinematic-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  animation: atmosphere-reveal 1.4s 0.08s ease-out forwards;
+}
+.cinematic-light {
+  position: absolute;
+  width: min(76vw, 1180px);
+  height: 125%;
+  right: -16%;
+  top: -33%;
+  object-fit: cover;
+  opacity: 0.105;
+  mix-blend-mode: screen;
+  filter: saturate(0.8) contrast(1.08);
+  animation: cinematic-light-sweep 15s ease-in-out infinite alternate;
+}
+.cinematic-ribbon {
+  position: absolute;
+  width: 116%;
+  max-width: none;
+  height: auto;
+  left: -8%;
+  bottom: 2.5%;
+  opacity: 0.09;
+  mix-blend-mode: screen;
+  filter: saturate(0.72) contrast(1.12);
+  animation: cinematic-ribbon-surge 13s ease-in-out infinite alternate;
+}
+.atmosphere-phase-1 .cinematic-light {
+  animation-delay: -3.2s;
+}
+.atmosphere-phase-2 .cinematic-light {
+  animation-delay: -7.4s;
+}
+.atmosphere-phase-3 .cinematic-light {
+  animation-delay: -11.1s;
+}
+.atmosphere-phase-1 .cinematic-ribbon {
+  animation-delay: -8s;
+}
+.atmosphere-phase-2 .cinematic-ribbon {
+  animation-delay: -4.5s;
+}
+.atmosphere-phase-3 .cinematic-ribbon {
+  animation-delay: -10.5s;
+}
+
+/* Larger hero assets for the product, development journey and team story. */
+@media (min-width: 761px) {
+  .machine-visual > img {
+    width: 126%;
+    max-width: 760px;
+  }
+  .product-plinth {
+    height: 410px;
+  }
+  .hardware-product {
+    width: 94%;
+    height: 98%;
+  }
+  .jar-visual {
+    height: 430px;
+  }
+  .journey-detail {
+    min-height: 280px;
+  }
+  .journey-detail > img {
+    height: 235px;
+  }
+  .impact-layout > img {
+    height: 410px;
+  }
+  .team-layout {
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: 5%;
+  }
+  .team-portraits > div {
+    height: 300px;
+  }
+  .team-photos > img {
+    max-height: 260px;
+  }
+}
+
+/* Staggered reveals restart on every slide because the active slide is remounted. */
+.slide .eyebrow,
+.slide h1,
+.slide h2,
+.slide .lede,
+.slide .primary,
+.slide .outlined-tag {
+  opacity: 0;
+  animation: content-rise 0.9s cubic-bezier(0.2, 0.75, 0.2, 1) forwards;
+}
+.slide h1,
+.slide h2 {
+  animation-delay: 0.1s;
+}
+.slide .lede,
+.slide .primary,
+.slide .outlined-tag {
+  animation-delay: 0.2s;
+}
+.hero-fish {
+  animation: fish-cinematic 10s ease-in-out infinite alternate;
+}
+.machine-visual > img {
+  animation: machine-orbit 9s ease-in-out infinite alternate;
+}
+.hardware-product {
+  animation:
+    hardware-reveal 0.85s cubic-bezier(0.16, 0.8, 0.25, 1),
+    hardware-breathe 7s 0.85s ease-in-out infinite alternate;
+}
+.jar-visual > img {
+  animation: jar-current 8s ease-in-out infinite alternate;
+}
+.journey-detail > img {
+  animation:
+    image-reveal 0.9s cubic-bezier(0.16, 0.8, 0.25, 1),
+    image-breathe 12s 0.9s ease-in-out infinite alternate;
+}
+.impact-layout > img {
+  animation: image-breathe 13s ease-in-out infinite alternate;
+}
+.team-portraits > div {
+  opacity: 0;
+  animation: portrait-rise 0.85s cubic-bezier(0.16, 0.8, 0.25, 1) forwards;
+}
+.team-portraits > div:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.team-portraits > div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.team-portraits > div:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.team-portraits img {
+  animation: portrait-breathe 8s ease-in-out infinite alternate;
+}
+.innovation-links > button,
+.numbered-list > div,
+.impact-items > div,
+.system-step {
+  opacity: 0;
+  animation: line-reveal 0.7s cubic-bezier(0.2, 0.75, 0.2, 1) forwards;
+}
+.innovation-links > button:nth-child(2),
+.numbered-list > div:nth-child(2),
+.impact-items > div:nth-child(2),
+.system-step:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.innovation-links > button:nth-child(3),
+.numbered-list > div:nth-child(3),
+.impact-items > div:nth-child(3),
+.system-step:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.bar-fill {
+  transform-origin: center bottom;
+  animation: bar-grow 1.15s 0.15s cubic-bezier(0.16, 0.8, 0.25, 1) both;
+}
+.connector {
+  animation: connector-pulse 1.9s ease-in-out infinite;
+}
+
+@keyframes atmosphere-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes cinematic-light-sweep {
+  from {
+    transform: translate3d(-4%, -1%, 0) scale(1.02) rotate(-1deg);
+    opacity: 0.07;
+  }
+  to {
+    transform: translate3d(8%, 4%, 0) scale(1.16) rotate(2deg);
+    opacity: 0.15;
+  }
+}
+@keyframes cinematic-ribbon-surge {
+  from {
+    transform: translate3d(-2%, 12px, 0) scaleX(1.02);
+    opacity: 0.055;
+  }
+  to {
+    transform: translate3d(5%, -18px, 0) scaleX(1.09);
+    opacity: 0.13;
+  }
+}
+@keyframes content-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+@keyframes fish-cinematic {
+  from {
+    transform: translate3d(-2%, 5px, 0) rotate(-10deg) scale(1.01);
+  }
+  to {
+    transform: translate3d(4%, -18px, 0) rotate(-6deg) scale(1.065);
+  }
+}
+@keyframes machine-orbit {
+  from {
+    transform: translate3d(-2%, 5px, 0) rotate(-1.2deg) scale(1.01);
+  }
+  to {
+    transform: translate3d(2%, -14px, 0) rotate(1.1deg) scale(1.055);
+  }
+}
+@keyframes hardware-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.88);
+    filter: blur(8px) drop-shadow(0 20px 25px #0005);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0) drop-shadow(0 20px 25px #0005);
+  }
+}
+@keyframes hardware-breathe {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-12px) scale(1.035);
+  }
+}
+@keyframes jar-current {
+  from {
+    transform: translate3d(-4px, 5px, 0) rotate(-1deg) scale(1.01);
+  }
+  to {
+    transform: translate3d(8px, -12px, 0) rotate(1deg) scale(1.055);
+  }
+}
+@keyframes image-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.94);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes image-breathe {
+  from {
+    transform: scale(1.005);
+    filter: saturate(0.88) contrast(1.02);
+  }
+  to {
+    transform: scale(1.045);
+    filter: saturate(1.06) contrast(1.06);
+  }
+}
+@keyframes portrait-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes portrait-breathe {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.035);
+  }
+}
+@keyframes line-reveal {
+  from {
+    opacity: 0;
+    transform: translateX(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes bar-grow {
+  from {
+    opacity: 0;
+    transform: scaleY(0.04);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+@keyframes connector-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateX(-3px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+}
+
+@media (min-width: 761px) and (max-height: 800px) {
+  .machine-visual > img {
+    width: 114%;
+    max-height: 385px;
+  }
+  .product-plinth {
+    height: 305px;
+  }
+  .jar-visual {
+    height: 330px;
+  }
+  .journey-detail {
+    min-height: 210px;
+  }
+  .journey-detail > img {
+    height: 175px;
+  }
+  .impact-layout > img {
+    height: 315px;
+  }
+  .team-portraits > div {
+    height: 230px;
+  }
+  .team-photos > img {
+    max-height: 190px;
+  }
+}
+
+@media (max-width: 760px) {
+  .cinematic-light {
+    width: 145vw;
+    right: -56%;
+    opacity: 0.08;
+  }
+  .cinematic-ribbon {
+    width: 190%;
+    left: -45%;
+    bottom: 8%;
+  }
+  .machine-visual > img {
+    width: 116%;
+    max-width: none;
+  }
+  .product-plinth {
+    height: 330px;
+  }
+  .hardware-product {
+    width: 100%;
+    height: 100%;
+  }
+  .jar-visual {
+    height: 350px;
+  }
+  .journey-detail > img {
+    height: 215px;
+  }
+  .impact-layout > img {
+    height: 300px;
+  }
+  .team-portraits > div {
+    height: 225px;
+  }
+  .team-photos > img {
+    max-height: 270px;
+  }
+}
+
+/* Motion can be disabled without hiding content that normally enters by animation. */
+.motion-off .cinematic-atmosphere,
+.motion-off .slide .eyebrow,
+.motion-off .slide h1,
+.motion-off .slide h2,
+.motion-off .slide .lede,
+.motion-off .slide .primary,
+.motion-off .slide .outlined-tag,
+.motion-off .innovation-links > button,
+.motion-off .numbered-list > div,
+.motion-off .impact-items > div,
+.motion-off .system-step,
+.motion-off .team-portraits > div {
+  opacity: 1 !important;
+}
+.motion-off .bar-fill {
+  transform: scaleY(1) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-atmosphere,
+  .slide .eyebrow,
+  .slide h1,
+  .slide h2,
+  .slide .lede,
+  .slide .primary,
+  .slide .outlined-tag,
+  .innovation-links > button,
+  .numbered-list > div,
+  .impact-items > div,
+  .system-step,
+  .team-portraits > div {
+    opacity: 1 !important;
+  }
+  .bar-fill {
+    transform: scaleY(1) !important;
+  }
+}

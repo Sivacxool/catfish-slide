@@ -63,6 +63,17 @@ function Ocean() {
     </div>
   );
 }
+function CinematicAtmosphere({ phase }: { phase: number }) {
+  return (
+    <div
+      className={`cinematic-atmosphere atmosphere-phase-${phase % 4}`}
+      aria-hidden="true"
+    >
+      <img className="cinematic-light" src={img('light')} alt="" />
+      <img className="cinematic-ribbon" src={img('ribbon')} alt="" />
+    </div>
+  );
+}
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <span className="eyebrow">{children}</span>;
 }
@@ -1118,6 +1129,7 @@ export default function Home() {
             aria-label={`สไลด์ ${i + 1}: ${slides[i].title}`}
             className={`slide slide-${i + 1} ${i === 0 ? 'hero' : ''} ${i === 6 ? 'innovation' : ''}`}
           >
+            <CinematicAtmosphere phase={i} />
             <SlideBody index={i} go={go} source={() => sources(i)} />
             <button className="slide-source" onClick={() => sources(i)}>
               <BookOpen size={12} />

@@ -91,6 +91,13 @@ try {
           missingImages: [...el.querySelectorAll('img')]
             .filter((i) => i.complete && i.naturalWidth === 0)
             .map((i) => i.getAttribute('src')),
+          hiddenContent: [
+            ...el.querySelectorAll(
+              'h1,h2,.numbered-list>div,.impact-items>div,.team-portraits>div',
+            ),
+          ]
+            .filter((e) => Number(getComputedStyle(e).opacity) < 0.9)
+            .map((e) => e.textContent.trim().slice(0, 80)),
         };
       });
       record.slides.push({ n, ...bounds });
@@ -101,7 +108,8 @@ try {
       if (
         bounds.overflow ||
         bounds.textClips.length ||
-        bounds.missingImages.length
+        bounds.missingImages.length ||
+        bounds.hiddenContent.length
       )
         results.failures.push({ viewport, n, ...bounds });
       if ([1440, 1366, 390].includes(viewport.width)) {
@@ -135,6 +143,44 @@ try {
     );
     await context.close();
   }
+  const motionContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: 'no-preference',
+  });
+  const motionPage = await motionContext.newPage();
+  motionPage.on('pageerror', (e) => errors.push(e.message));
+  await motionPage.goto(base);
+  await motionPage.waitForFunction(() =>
+    document.querySelector('main')?.classList.contains('presenting'),
+  );
+  const fishBefore = await motionPage
+    .locator('.hero-fish')
+    .evaluate((e) => getComputedStyle(e).transform);
+  await motionPage.waitForTimeout(700);
+  const fishAfter = await motionPage
+    .locator('.hero-fish')
+    .evaluate((e) => getComputedStyle(e).transform);
+  assert.notEqual(fishBefore, fishAfter);
+  await goto(motionPage, 7);
+  assert.match(
+    await motionPage
+      .locator('.machine-visual > img')
+      .evaluate((e) => getComputedStyle(e).animationName),
+    /machine-orbit/,
+  );
+  await motionPage
+    .getByRole('button', { name: 'หยุดภาพเคลื่อนไหว', exact: true })
+    .click();
+  assert.equal(
+    await motionPage
+      .locator('.machine-visual > img')
+      .evaluate((e) => getComputedStyle(e).animationName),
+    'none',
+  );
+  results.interactions.push(
+    'Cinematic motion runs and manual motion control stops it',
+  );
+  await motionContext.close();
   const interactionContext = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     reducedMotion: 'reduce',
