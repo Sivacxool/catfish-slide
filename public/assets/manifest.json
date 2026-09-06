@@ -1,0 +1,170 @@
+[
+  {
+    "file": "catfish.webp",
+    "source": "Pitching.pdf",
+    "page": 1,
+    "xref": 74,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "ocean.webp",
+    "source": "Pitching.pdf",
+    "page": 6,
+    "xref": 1727,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "light.webp",
+    "source": "Pitching.pdf",
+    "page": 6,
+    "xref": 1760,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "ribbon.webp",
+    "source": "Pitching.pdf",
+    "page": 1,
+    "xref": 1533,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "farm.webp",
+    "source": "Pitching.pdf",
+    "page": 19,
+    "xref": 2248,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "visit.webp",
+    "source": "Pitching.pdf",
+    "page": 8,
+    "xref": 197,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "students.webp",
+    "source": "Pitching.pdf",
+    "page": 8,
+    "xref": 193,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "fieldwork.webp",
+    "source": "Pitching.pdf",
+    "page": 8,
+    "xref": 194,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "net.webp",
+    "source": "Pitching.pdf",
+    "page": 25,
+    "xref": 2437,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "jars.webp",
+    "source": "Pitching.pdf",
+    "page": 26,
+    "xref": 434,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "machine.webp",
+    "source": "Pitching.pdf",
+    "page": 27,
+    "xref": 442,
+    "type": "concept model from PDF"
+  },
+  {
+    "file": "heater.webp",
+    "source": "Pitching.pdf",
+    "page": 32,
+    "xref": 500,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "fan.webp",
+    "source": "Pitching.pdf",
+    "page": 32,
+    "xref": 501,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "esp32.webp",
+    "source": "Pitching.pdf",
+    "page": 32,
+    "xref": 502,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "sensor.webp",
+    "source": "Pitching.pdf",
+    "page": 32,
+    "xref": 503,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "jar.webp",
+    "source": "Pitching.pdf",
+    "page": 36,
+    "xref": 559,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "fry.webp",
+    "source": "Pitching.pdf",
+    "page": 40,
+    "xref": 620,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "camera.webp",
+    "source": "Pitching.pdf",
+    "page": 40,
+    "xref": 626,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "map.webp",
+    "source": "Pitching.pdf",
+    "page": 8,
+    "xref": 198,
+    "type": "image extracted from user-provided PDF"
+  },
+  {
+    "file": "team-109.webp",
+    "source": "Pitching.pdf",
+    "page": 3,
+    "xref": 109,
+    "type": "team portrait"
+  },
+  {
+    "file": "team-110.webp",
+    "source": "Pitching.pdf",
+    "page": 3,
+    "xref": 110,
+    "type": "team portrait"
+  },
+  {
+    "file": "team-111.webp",
+    "source": "Pitching.pdf",
+    "page": 3,
+    "xref": 111,
+    "type": "team portrait"
+  },
+  {
+    "file": "team-112.webp",
+    "source": "Pitching.pdf",
+    "page": 3,
+    "xref": 112,
+    "type": "team portrait"
+  },
+  {
+    "file": "team-1609.webp",
+    "source": "Pitching.pdf",
+    "page": 3,
+    "xref": 1609,
+    "type": "institution logo"
+  }
+]
