@@ -172,7 +172,10 @@ function Research() {
           </button>
         </div>
         <div className="research-callout">
-          <strong>
+          <strong
+            key={hot ? 'rate-32' : 'rate-29'}
+            className="research-value"
+          >
             {hot ? '26.6' : '43.4'}
             <small>%</small>
           </strong>
@@ -185,7 +188,7 @@ function Research() {
           <span>HATCHING RATE</span>
           <span>Rey et al., 2025</span>
         </div>
-        <div className="bar-chart">
+        <div key={hot ? 'chart-32' : 'chart-29'} className="bar-chart">
           <div className="chart-guides" aria-hidden="true">
             {[50, 40, 30, 20, 10, 0].map((n) => (
               <div key={n}>

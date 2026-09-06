@@ -161,6 +161,15 @@ try {
     .locator('.hero-fish')
     .evaluate((e) => getComputedStyle(e).transform);
   assert.notEqual(fishBefore, fishAfter);
+  await goto(motionPage, 5);
+  await motionPage.getByRole('button', { name: '32°C', exact: true }).click();
+  await motionPage.waitForTimeout(40);
+  assert.ok(
+    await motionPage
+      .locator('.bar-fill')
+      .first()
+      .evaluate((e) => e.getAnimations().some((a) => a.animationName === 'bar-grow')),
+  );
   await goto(motionPage, 7);
   assert.match(
     await motionPage

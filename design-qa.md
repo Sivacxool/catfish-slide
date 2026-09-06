@@ -4,40 +4,39 @@ final result: passed
 
 ## Source and implementation evidence
 
-- Source visual truth: the previous verified site captures in `outputs/qa-production/`, the supplied `Pitching.pdf` asset set, and the existing Ocean Precision design system.
-- Implementation captures: `outputs/qa-final/`.
-- Combined before/after comparisons opened for visual review: `outputs/comparison/compare-cinematic-machine.jpg`, `compare-cinematic-hardware.jpg`, and `compare-cinematic-team.jpg`.
+- Source visual truth: the supplied `Pitching.pdf`, the attached research-chart screenshot, and the previous verified captures in `outputs/qa-final/`.
+- Latest implementation captures: `outputs/qa-map-animation-full/`.
+- Combined before/after comparisons opened for visual review: `outputs/comparison/compare-map-animation-map.jpg` and `compare-map-animation-research.jpg`.
 - Comparison viewport: 1440 × 900 CSS pixels, device scale factor 1. Each side of the combined images is 1440 × 900 pixels; no density normalization was required.
-- States: innovation overview, first hardware device selected, and team slide. Stable screenshots used reduced motion; live motion was tested separately with the no-preference media setting.
-- Focused regions were not required because the product, sensor, team portraits, typography, and footer controls remain clearly readable in the full-resolution captures. Individual 1440-pixel screenshots were also opened before judging the combined views.
+- States: Thailand market map and research chart at 29°C. Stable screenshots used reduced motion; live animation was tested separately with the no-preference media setting.
+- Full-view comparison was sufficient because the map silhouette, chart bars, labels, buttons, typography, and footer are clear at native resolution. The attached screenshot was also checked as a focused chart reference.
 
 ## Findings
 
 No actionable P0, P1, or P2 issue remains.
 
-- Typography: the established local Noto Sans Thai and Manrope hierarchy is preserved. Thai marks, wrapping, heading weight, and small labels remained readable at every tested viewport.
-- Spacing and layout: the machine, hardware, jar, journey, impact, and team imagery now occupies more of its intended visual region. The 1440 × 900 comparisons show stronger scale without colliding with copy, navigation, or the fixed footer.
-- Colors and visual tokens: the existing navy, pearl, aqua, and champagne palette is unchanged. The new atmosphere uses the supplied light and ribbon raster assets at restrained opacity.
-- Image quality and fidelity: every enlarged asset comes from the PDF-derived WebP set. Object fitting preserves aspect ratios; no placeholder, CSS drawing, or stretched screenshot was introduced.
-- Copy and content: all text and source qualifications are preserved.
-- Motion: slide content now reveals in staggered sequence; the fish, machine, sensor, jar, journey image, team portraits, chart, and data lines animate with distinct timing. The motion toggle stops animations, and `prefers-reduced-motion` keeps every content item visible.
+- Typography: local Noto Sans Thai and Manrope remain consistent; Thai marks, chart labels, and 29/32 controls remain readable.
+- Spacing and layout: the Thailand map is larger at desktop and mobile sizes while keeping the market figures and fixed footer clear. The chart remains aligned to a shared 0–50% baseline.
+- Colors and visual tokens: existing navy, pearl, aqua, and champagne tokens are preserved.
+- Image quality and fidelity: the map continues to use the PDF-derived raster asset with preserved aspect ratio and no placeholder or CSS drawing.
+- Copy and content: 11,528 tons, 13.57%, 43.4%, 26.6%, and the cited source text are unchanged.
+- Motion: switching the 29°C and 32°C buttons remounts the chart and value keyframes, so bars and the large rate animate on every change. The manual motion toggle and `prefers-reduced-motion` behavior remain intact.
 
 ## Comparison history
 
-1. First cinematic pass enlarged the focal assets and added animated PDF-derived light and water-ribbon layers.
-2. The first reduced-motion capture exposed hidden headings and lists because their entrance opacity remained at zero after animation was disabled. Added explicit visible fallback states for both the manual motion-off class and `prefers-reduced-motion`.
-3. Rebuilt and recaptured all target viewports. The revised captures show complete content in slides 7, 8, 9, 12, 14, and 15. The combined before/after images show the intended increase in product and portrait scale with no new collision.
+1. The map was enlarged using responsive height overrides: 430px desktop, 315px short desktop, and 315px mobile. The paired map comparison shows a more prominent silhouette without text collision.
+2. The chart bug was traced to unchanged DOM nodes: changing `height` and opacity did not restart the entrance keyframe. Added temperature-specific keys to the chart and value so each 29/32 selection starts a fresh animation.
+3. Added an interaction assertion that confirms `bar-grow` is running after a 32°C selection. Full responsive captures were recaptured after the fix.
 
 ## Verification
 
-- Browser-rendered production build tested at 1440×900, 1920×1080, 1366×768, 768×1024, 390×844, and 320×740.
+- Browser-rendered build tested at 1440×900, 1920×1080, 1366×768, 768×1024, 390×844, and 320×740.
 - 6 viewports × 16 slides = 96 inspected layouts.
-- No horizontal overflow, clipped heading/paragraph/button, hidden reduced-motion content, or broken image found.
-- 12 interaction groups passed: keyboard and slide boundaries; contents and hardware selection; workflow steps; research toggle and chart ratio; calculator validation; source-page loading; presenter notes and modal controls; reading/presentation modes; reduced-motion control; fullscreen; autoplay; live cinematic animation and manual stop.
-- Zero captured page errors, console errors, or automated WCAG A/AA violations in the tested states.
+- 12 interaction groups passed, including research selection, chart ratio, animation restart, manual motion stop, and reduced-motion content visibility.
+- No horizontal overflow, clipped text, broken image, page error, console error, or automated WCAG A/AA violation was found in tested states.
 - `npm run lint`: passed.
 - `npm run build`: passed.
 
 ## Residual test limits
 
-Browser verification used desktop Chrome with responsive viewport emulation. Physical iOS/Safari devices, projectors, and assistive-technology sessions were not part of this pass.
+Verification used desktop Chrome with responsive viewport emulation. Physical Safari/iOS devices, projectors, and assistive-technology sessions were not part of this pass.
