@@ -3168,6 +3168,89 @@ p {
   }
 }
 
+/* Shared-object morph: the visual travels while copy settles into its new place.
+   Reading mode never registers names, so its 16 sections cannot collide. */
+.presenting .slide { view-transition-name: deck-page; }
+.presenting .slide :is(h1, h2) { view-transition-name: deck-title; }
+.presenting .slide :is(.hero-visual, .editorial-photo, .map-panel,
+  .full-photo, .chart-panel, .comparison-grid, .machine-visual,
+  .product-plinth, .jar-visual, .fry-photo, .architecture,
+  .journey-detail, .experiment-main, .impact-layout > img, .team-photos) {
+  view-transition-name: deck-object;
+}
+::view-transition { pointer-events: none; }
+::view-transition-group(*) {
+  animation-duration: 680ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-group(root) { animation: none; }
+::view-transition-old(root) { animation: none; opacity: 0; }
+::view-transition-new(root) { animation: none; }
+::view-transition-old(deck-page) { animation: morph-page-out 220ms ease both; }
+::view-transition-new(deck-page) { animation: morph-page-in 550ms 70ms ease both; }
+::view-transition-old(deck-title) { animation: morph-copy-out 180ms ease both; }
+::view-transition-new(deck-title) {
+  animation: morph-copy-in 480ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+::view-transition-image-pair(deck-object) {
+  isolation: isolate;
+  overflow: clip;
+  border-radius: 18px;
+}
+::view-transition-old(deck-object), ::view-transition-new(deck-object) {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  mix-blend-mode: normal;
+}
+::view-transition-old(deck-object) { animation: morph-object-out 460ms ease both; }
+::view-transition-new(deck-object) { animation: morph-object-in 600ms ease both; }
+@supports (view-transition-name: deck-page) {
+  .presenting .slide,
+  .presenting .slide :is(.eyebrow, h1, h2, .lede, .primary,
+    .outlined-tag, .cinematic-atmosphere) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Short, quiet entrances also serve browsers without View Transitions. */
+.slide :is(.eyebrow, h1, h2, .lede, .primary, .outlined-tag) {
+  animation-duration: 550ms;
+}
+.slide :is(h1, h2) { animation-delay: 40ms; }
+.slide :is(.lede, .primary, .outlined-tag) { animation-delay: 90ms; }
+.reading .slide :is(.eyebrow, h1, h2, .lede, .primary, .outlined-tag) {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+@keyframes morph-page-out { to { opacity: 0; } }
+@keyframes morph-page-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes morph-copy-out { to { opacity: 0; transform: translateY(-12px); } }
+@keyframes morph-copy-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes morph-object-out { to { opacity: 0; filter: blur(3px); } }
+@keyframes morph-object-in {
+  from { opacity: 0; filter: blur(3px); }
+  to { opacity: 1; filter: blur(0); }
+}
+html[data-morphing='back']::view-transition-new(deck-title) {
+  animation-name: morph-copy-back;
+}
+@keyframes morph-copy-back {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
 /* Motion can be disabled without hiding content that normally enters by animation. */
 .motion-off .cinematic-atmosphere,
 .motion-off .slide .eyebrow,

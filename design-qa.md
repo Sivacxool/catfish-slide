@@ -39,4 +39,15 @@ No actionable P0, P1, or P2 issue remains.
 
 ## Residual test limits
 
+## Object morph update — 2026-09-07
+
+- Primary visuals share a View Transition group that interpolates position and size over 680 ms. Titles fade and settle separately; the navigation remains stationary and clickable.
+- Reading mode keeps text immediately visible. Reduced motion and the manual motion switch skip transitions. Unsupported browsers keep direct navigation.
+- Navigation cancels superseded transitions and commits only the latest request. Seven synchronous arrow presses land on the seventh next slide without duplicate sections. Closing the contents precedes snapshot capture.
+- Fixed browser history returning to the initial URL without a slide hash.
+- Verified all 15 consecutive transitions reach the native `ready` state, with fully visible titles after settling. Inspected `outputs/qa/morph-midpoint.png` and `outputs/qa/morph-settled.png`.
+- Full browser verification: 96 layouts at six viewport sizes, 13 interaction groups, zero recorded runtime errors, layout failures, or automated accessibility violations. Lint and the Vercel production build pass.
+
+## Device coverage
+
 Verification used desktop Chrome with responsive viewport emulation. Physical Safari/iOS devices, projectors, and assistive-technology sessions were not part of this pass.

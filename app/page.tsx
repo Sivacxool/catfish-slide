@@ -7,6 +7,7 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
+import { flushSync } from 'react-dom';
 import {
   ArrowUpRight,
   ArrowRight,
@@ -863,31 +864,71 @@ export default function Home() {
   const touchStart = useRef({ x: 0, y: 0 });
   const returnFocus = useRef<HTMLElement | null>(null);
   const container = useRef<HTMLDivElement>(null);
+  const requestedSlide = useRef(0);
+  const transition = useRef<{ skipTransition: () => void } | null>(null);
+  const transitionRevision = useRef(0);
+  const changeSlide = useCallback((next: number) => {
+    const previous = requestedSlide.current;
+    requestedSlide.current = next;
+    if (next === previous) return;
+    const revision = ++transitionRevision.current;
+    transition.current?.skipTransition();
+    const commit = () => {
+      if (revision !== transitionRevision.current) return;
+      flushSync(() => setActive(next));
+      container.current?.scrollTo({ top: 0 });
+    };
+    if (reading || !motion || !document.startViewTransition) {
+      delete document.documentElement.dataset.morphing;
+      commit();
+      return;
+    }
+    document.documentElement.dataset.morphing = next > previous ? 'forward' : 'back';
+    const current = document.startViewTransition(commit);
+    transition.current = current;
+    // Cancellation is expected when the presenter navigates again mid-morph.
+    void current.ready.catch(() => {});
+    void current.finished.finally(() => {
+      if (revision !== transitionRevision.current) return;
+      delete document.documentElement.dataset.morphing;
+      transition.current = null;
+    });
+  }, [reading, motion]);
+  useEffect(() => {
+    if (!reading && motion) return;
+    transition.current?.skipTransition();
+    delete document.documentElement.dataset.morphing;
+  }, [reading, motion]);
+  useEffect(() => () => {
+    ++transitionRevision.current;
+    transition.current?.skipTransition();
+    delete document.documentElement.dataset.morphing;
+  }, []);
   const go = useCallback(
     (n: number) => {
       const next = Math.max(0, Math.min(slides.length - 1, n));
       setAuto(false);
-      setActive(next);
-      window.location.hash = `slide-${next + 1}`;
-      setModal(null);
+      // Close the contents dialog before capturing the outgoing page.
+      flushSync(() => setModal(null));
+      changeSlide(next);
+      window.history.pushState(null, '', `#slide-${next + 1}`);
       if (reading)
         document
           .getElementById(`slide-${next + 1}`)
           ?.scrollIntoView({ behavior: motion ? 'smooth' : 'instant' });
       else container.current?.scrollTo({ top: 0 });
     },
-    [reading, motion],
+    [reading, motion, changeSlide],
   );
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 760px)');
     const hash = () => {
       const m = window.location.hash.match(/^#slide-(\d+)$/);
-      if (m) {
-        const n = Math.max(0, Math.min(15, Number(m[1]) - 1));
+      if (m || !window.location.hash) {
+        const n = m ? Math.max(0, Math.min(15, Number(m[1]) - 1)) : 0;
         setAuto(false);
-        setActive(n);
+        changeSlide(n);
         container.current?.scrollTo({ top: 0 });
-        if (media.matches)
+        if (reading)
           setTimeout(
             () => document.getElementById(`slide-${n + 1}`)?.scrollIntoView(),
             50,
@@ -903,7 +944,7 @@ export default function Home() {
       window.removeEventListener('hashchange', hash);
       document.removeEventListener('fullscreenchange', fs);
     };
-  }, []);
+  }, [changeSlide, reading]);
   useEffect(() => {
     if (!reading) return;
     const observer = new IntersectionObserver(
@@ -911,8 +952,11 @@ export default function Home() {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0])
-          setActive(Number((visible[0].target as HTMLElement).dataset.slide));
+        if (visible[0]) {
+          const next = Number((visible[0].target as HTMLElement).dataset.slide);
+          requestedSlide.current = next;
+          setActive(next);
+        }
       },
       { rootMargin: '-80px 0px -35% 0px', threshold: [0, 0.1, 0.25, 0.5] },
     );
@@ -928,11 +972,11 @@ export default function Home() {
       if (document.hidden) return;
       window.history.replaceState(null, '', `#slide-${active + 2}`);
       container.current?.scrollTo({ top: 0 });
-      setActive(active + 1);
+      changeSlide(active + 1);
       if (active === 14) setAuto(false);
     }, 16000);
     return () => clearInterval(t);
-  }, [auto, modal, reading, active]);
+  }, [auto, modal, reading, active, changeSlide]);
   const toggleFullscreen = useCallback(async () => {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
@@ -963,10 +1007,10 @@ export default function Home() {
         return;
       if (['ArrowRight', 'PageDown', ' '].includes(e.key)) {
         e.preventDefault();
-        go(active + 1);
+        go(requestedSlide.current + 1);
       } else if (['ArrowLeft', 'PageUp'].includes(e.key)) {
         e.preventDefault();
-        go(active - 1);
+        go(requestedSlide.current - 1);
       } else if (e.key === 'Home') {
         e.preventDefault();
         go(0);
@@ -994,11 +1038,13 @@ export default function Home() {
     return () => clearTimeout(t);
   }, [notice]);
   const sources = (n = active) => {
+    requestedSlide.current = n;
     setActive(n);
     setSourcePage(slides[n].pages[0]);
     setModal('sources');
   };
   const toggleReading = () => {
+    transition.current?.skipTransition();
     setAuto(false);
     const next = !reading;
     setReading(next);
@@ -1096,7 +1142,7 @@ export default function Home() {
           const dx = e.changedTouches[0].clientX - touchStart.current.x,
             dy = e.changedTouches[0].clientY - touchStart.current.y;
           if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5)
-            go(active + (dx < 0 ? 1 : -1));
+            go(requestedSlide.current + (dx < 0 ? 1 : -1));
         }}
       >
         {(reading ? slides.map((_, i) => i) : [active]).map((i) => (
@@ -1168,7 +1214,7 @@ export default function Home() {
           <button
             className="round-button"
             disabled={active === 0}
-            onClick={() => go(active - 1)}
+            onClick={() => go(requestedSlide.current - 1)}
             aria-label="สไลด์ก่อนหน้า"
           >
             <ArrowLeft size={18} />
@@ -1176,7 +1222,7 @@ export default function Home() {
           <button
             className="round-button next"
             disabled={active === 15}
-            onClick={() => go(active + 1)}
+            onClick={() => go(requestedSlide.current + 1)}
             aria-label="สไลด์ถัดไป"
           >
             <ArrowRight size={18} />

@@ -161,6 +161,41 @@ try {
     .locator('.hero-fish')
     .evaluate((e) => getComputedStyle(e).transform);
   assert.notEqual(fishBefore, fishAfter);
+  // Real transitions must produce snapshots, settle, and accept interruption.
+  await motionPage.evaluate(() => {
+    window.__morphResults = [];
+    const start = document.startViewTransition.bind(document);
+    document.startViewTransition = (update) => {
+      const transition = start(update);
+      transition.ready.then(
+        () => window.__morphResults.push('ready'),
+        (error) => window.__morphResults.push(error.name),
+      );
+      return transition;
+    };
+  });
+  for (let n = 2; n <= 16; n++) {
+    await motionPage.getByRole('button', { name: 'สไลด์ถัดไป', exact: true }).click();
+    await motionPage.waitForFunction((n) =>
+      document.querySelector('.slide')?.dataset.slide === String(n - 1) &&
+      !document.documentElement.dataset.morphing, n);
+    assert.equal(await motionPage.locator('.slide h1, .slide h2').evaluate(
+      (el) => getComputedStyle(el).opacity), '1');
+  }
+  assert.equal(await motionPage.evaluate(() =>
+    window.__morphResults.filter((value) => value === 'ready').length), 15);
+  await motionPage.keyboard.press('Home');
+  await motionPage.waitForFunction(() => !document.documentElement.dataset.morphing);
+  await motionPage.evaluate(() => {
+    for (let i = 0; i < 7; i++)
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+  });
+  await motionPage.waitForFunction(() =>
+    document.querySelector('.slide')?.dataset.slide === '7' &&
+    !document.documentElement.dataset.morphing);
+  assert.equal(await motionPage.locator('.slide').count(), 1);
+  await motionPage.screenshot({ path: `${out}/morph-settled.png` });
+  results.interactions.push('All 15 object morphs ready; rapid navigation retains the latest slide; titles remain visible');
   await goto(motionPage, 5);
   await motionPage.getByRole('button', { name: '32°C', exact: true }).click();
   await motionPage.waitForTimeout(40);
